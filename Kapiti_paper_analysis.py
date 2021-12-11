@@ -57,16 +57,18 @@ def scatter_plot_onetoone(x,y, x_label, y_label, lineStart, lineEnd, title, save
     rmse_val = rmse(x,y)
     median_abs_diff = median_abs_diff_diff_bias(x,y)
     slope_val = slope(x,y)
+    pop = pop_label(x)
     
-    plt.text(lineStart+2,lineEnd-5, median_val, fontsize = 22)
-    plt.text(lineStart+2,lineEnd-10, rmse_val, fontsize = 22)
-    plt.text(lineStart+2,lineEnd-15, median_abs_diff, fontsize = 22)
-    plt.text(lineStart+2,lineEnd-20, slope_val, fontsize = 22)
+    plt.text(lineStart + 2, lineEnd-5, median_val, fontsize = 22)
+    plt.text(lineStart + 2, lineEnd-10, rmse_val, fontsize = 22)
+    plt.text(lineStart + 2, lineEnd-15, median_abs_diff, fontsize = 22)
+    plt.text(lineStart + 2, lineEnd-20, slope_val, fontsize = 22)
+    plt.text(lineStart + 2, lineEnd - 25, pop, fontsize=22)
     
     # Calculate the point density and sort to display most dense on top useing 2d histo
     bins = 100
-    data , x_e, y_e = np.histogram2d(x, y, bins = bins)
-    z = interpn( ( 0.5*(x_e[1:] + x_e[:-1]) , 0.5*(y_e[1:]+y_e[:-1]) ),
+    data, x_e, y_e = np.histogram2d(x, y, bins = bins)
+    z = interpn((0.5*(x_e[1:] + x_e[:-1]) , 0.5*(y_e[1:]+y_e[:-1])),
                 data , np.vstack([x,y]).T , method = "splinef2d", bounds_error = False )
 
     # Sort the points by density, so that the densest points are plotted last
@@ -78,9 +80,16 @@ def scatter_plot_onetoone(x,y, x_label, y_label, lineStart, lineEnd, title, save
     plt.scatter(x, y, s = 50, marker = "+", c=z, edgecolor='', alpha = 0.8)
     plt.colorbar()
 
-    plt.savefig(savename, dpi=300, bbox_inches='tight')
+    plt.show()
+    #plt.savefig(savename, dpi=300, bbox_inches='tight')
     #plt.close('all')
-    
+
+
+def pop_label(x):
+    pop = len(x)
+    label = 'N = ' + str(pop)
+    return label
+
 
 def median_diff(x,y, **kwargs):
     """
@@ -592,10 +601,10 @@ def cloudy_ts_plotting(df_in, kapiti_col, mlst_as_col, clear_col, savename,
 Set up
 """
 
-prepped_fpath = "C:/Users/tom-d/Documents/LST correction/Corrected_LST_v2/"
-cloud_data_fname = "C:/Users/tom-d/Documents/LST correction/Cloud_analysis_v1.csv"
-plots_out_fpath = "C:/Users/tom-d/Documents/LST correction/Plots/PRISE_report/"
-envi_fpath = "C:/Users/tom-d/Documents/LST correction/Envi_params/envi_params.csv"
+prepped_fpath = "F:/KCL_silver_all_data/LST correction/Corrected_LST_v2/"
+cloud_data_fname = "F:/KCL_silver_all_data/LST correction/Cloud_analysis_v1.csv"
+plots_out_fpath = "F:/KCL_silver_all_data/LST correction/Plots/PRISE_report/"
+envi_fpath = "F:/KCL_silver_all_data/LST correction/Envi_params/envi_params.csv"
 
 #Load dfs
 df_site_1 = site_loader(prepped_fpath + 'SITE_1_dw_emis_corrected.csv')
@@ -669,27 +678,36 @@ Upscaled average plotting and calculation
 """
 os.chdir("C:/Users/tom-d/Documents/Publications/Kapiti_site_first_paper/Figures_v2/Sub_plots/")
 
-#For grand site mean
+# For grand site mean
 scatter_plot_onetoone(df_site_4['MLSTS upscaled grand mean'], df_site_4['LST'],
                       'Kapiti grand upscaled mean (K)', 'SEVIRI MLST (K)', 270, 340,
                       'Kapiti grand upscaled mean vs. SEVIRI MLST',
                       'Kapiti grand upscaled mean vs SEVIRI MLST.png')
 
 scatter_plot_onetoone(df_site_4['MLSTS upscaled grand mean'], df_site_4['LSTS'],
-                      'Kapiti grand upscaled mean (K)', 'SEVIRI MLST-AS (K)', 270, 340,
-                      'Kapiti grand upscaled mean vs. SEVIRI MLST-AS',
-                      'Kapiti grand upscaled mean vs SEVIRI MLST-AS.png')
+                      'Kapiti upscaled mean (K)', 'SEVIRI MLST-AS (K)', 270, 340,
+                      'Kapiti upscaled mean vs. SEVIRI MLST-AS',
+                      'Kapiti upscaled mean vs SEVIRI MLST-AS.png')
 
-#Cloudy times only MLSTS
+# Cloudy times only MLSTS
 df_site_4_cloudy = df_site_4[df_site_4['LST'].isnull()]
 
 scatter_plot_onetoone(df_site_4_cloudy['MLSTS upscaled grand mean'],
                       df_site_4_cloudy['LSTS'],
-                      'Kapiti grand upscaled mean (K)', 
+                      'Kapiti upscaled mean (K)',
                       'MLST-AS energy balance model (K)', 270, 340,
-                      'Kapiti grand upscaled mean vs. energy balance model',
-                      'Kapiti grand upscaled mean vs MLST-AS energy balance model.png')
+                      'Kapiti upscaled mean vs. energy balance model',
+                      'Kapiti upscaled mean vs MLST-AS energy balance model.png')
 
+# SEVIRI LWITR only MLSTIS
+df_site_4_sunny = df_site_4[df_site_4['LST'].notnull()]
+
+scatter_plot_onetoone(df_site_4_sunny['MLSTS upscaled grand mean'],
+                      df_site_4_sunny['LSTS'],
+                      'Kapiti upscaled mean (K)',
+                      'SEVIRI LWIR (K)', 270, 340,
+                      'Kapiti upscaled mean vs. SEVIRI LWIR',
+                      'Kapiti upscaled mean vs SEVIRI LWIR.png')
 
 """
 Summary time series plots
@@ -1423,15 +1441,3 @@ scatter_plot_onetoone(df_era5_cloudy['Upscaled mean ERA5'], df_era5_cloudy['ERA5
                       'Kapiti grand upscaled mean (K)', 'ERA5 land SKT cloudy (K)', 270, 340,
                       'Kapiti grand upscaled mean vs. ERA5 land SKT cloudy',
                       'Kapiti grand upscaled mean vs ERA5 land SKT cloudy.png')
-
-
-
-
-
-
-
-
-
-
-
-
