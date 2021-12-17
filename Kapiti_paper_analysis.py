@@ -481,8 +481,8 @@ def multi_line_plot_two_axis(**kwargs):
 
     plt.title(title)
     plt.tight_layout()
-    plt.show()
     plt.savefig(savename, dpi=300, bbox_inches='tight')
+    plt.show()
     return print(title + ' plotted')
 
 
@@ -1157,8 +1157,8 @@ multi_line_plot_two_axis(title='Soil moisture 5 cm',
                          font_size=36)
 
 # Daily oct elements plots 24th
-df_plotting_oct_24 = df_plotting_oct.truncate(before='2018-10-23',
-                                              after='2018-10-24',
+df_plotting_oct_24 = df_plotting_oct.truncate(before='2018-10-24',
+                                              after='2018-10-25',
                                               axis='rows')
 
 plot_list_left = [df_plotting_oct_24['Kapiti upscaled mean'],
@@ -1223,6 +1223,7 @@ multi_line_plot_two_axis(title='Soil moisture 5 cm',
                          fig_size=[14, 10],
                          alpha_val=1,
                          font_size=36)
+
 
 # Same again, but for start of rainy season in November
 df_plotting_nov = df_plotting.tz_localize(None)
@@ -1318,10 +1319,10 @@ plot_list_left = [df_plotting_nov_20['Kapiti upscaled mean'],
                   df_plotting_nov_20['MLST-AS']]
 plot_list_right = [df_plotting_nov_20['Precipitation']]
 multi_line_plot_two_axis(title='Precipitation',
-                         savename='Precip_day_nov20.png',
+                         savename='Precip_day_nov19.png',
                          data_list_left=plot_list_left,
                          data_list_right=plot_list_right,
-                         x_label='2018-11-20',
+                         x_label='2018-11-19',
                          y_label_left='Surface temp. (K)',
                          y_label_right='Precip. (mm)',
                          legend_off=True,
@@ -1334,10 +1335,10 @@ multi_line_plot_two_axis(title='Precipitation',
 plot_list_right = [df_plotting_nov_20['Soil Temp 5cm']]
 df_plotting_nov_20['Soil Temp 5cm'] = df_plotting_nov_20['Soil Temp 5cm'] + 273.15
 multi_line_plot_two_axis(title='Soil temperature 5 cm',
-                         savename='Soil temperature_day_nov20.png',
+                         savename='Soil temperature_day_nov19.png',
                          data_list_left=plot_list_left,
                          data_list_right=plot_list_right,
-                         x_label='2018-11-20',
+                         x_label='2018-11-19',
                          y_label_left='Surface temp. (K)',
                          y_label_right='Temperature (K)',
                          legend_off=True,
@@ -1349,10 +1350,10 @@ multi_line_plot_two_axis(title='Soil temperature 5 cm',
 
 plot_list_right = [df_plotting_nov_20['RH 2m']]
 multi_line_plot_two_axis(title='Relative humidity',
-                         savename='RH_day_nov20.png',
+                         savename='RH_day_nov19.png',
                          data_list_left=plot_list_left,
                          data_list_right=plot_list_right,
-                         x_label='2018-11-20',
+                         x_label='2018-11-19',
                          y_label_left='Surface temp. (K)',
                          y_label_right='RH 2 m (%)',
                          legend_off=True,
@@ -1364,10 +1365,10 @@ multi_line_plot_two_axis(title='Relative humidity',
 
 plot_list_right = [df_plotting_nov_20['Soil water 5cm']]
 multi_line_plot_two_axis(title='Soil moisture 5 cm',
-                         savename='SoilMoisture_day_nov20.png',
+                         savename='SoilMoisture_day_nov19.png',
                          data_list_left=plot_list_left,
                          data_list_right=plot_list_right,
-                         x_label='2018-11-20',
+                         x_label='2018-11-19',
                          y_label_left='Surface temp. (K)',
                          y_label_right='VMC (%)',
                          legend_off=True,
