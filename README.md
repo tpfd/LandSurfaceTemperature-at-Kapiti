@@ -11,4 +11,4 @@ The two scripts are:
 
 Any questions or problems spotted, please do raise an issue on this repo in order that others can benefit from any discussion that follows.
 
-If you use any of this code in your own work please cite the original paper (will be linked here when available) and/or this repositry.
+If you use any of this code in your own work please cite the original paper (https://doi.org/10.1016/j.isprsjprs.2022.03.003) and/or this repositry.
